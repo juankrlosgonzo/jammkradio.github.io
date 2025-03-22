@@ -4,7 +4,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #121212; 
+    background-color: #230b2c; 
     margin: 0;
     padding: 0;
     color: white; 
@@ -61,3 +61,4 @@ button:hover {
     font-size: 18px;
     margin: 0 15px;
 }
+
