@@ -1,0 +1,54 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Player</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="importmap">
+        {
+            "imports": {
+                "standard-audio-context": "https://unpkg.com/standard-audio-context@2.3.0/es2019/index.js"
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="player">
+        <img src="https://i.imgur.com/DbH2i2k.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
+        <h1 style="font-family: Arial, sans-serif; color: #ADD8E6; font-style: italic;">JammkRadio</h1>
+        <audio id="radio" src="https://destroy-stated-kate-sole.trycloudflare.com/stream" preload="auto" loop="" autoplay=""></audio>
+        <div class="controls">
+            <button id="playButton">Play</button>
+            <button id="pauseButton">Pause</button>
+            <button id="stopButton">Stop</button>
+        </div>
+        <br>
+        <label for="volumeControl">Volume:</label>
+        <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+    </div>
+    <script>
+        const audio = document.getElementById('radio');
+        const playButton = document.getElementById('playButton');
+        const pauseButton = document.getElementById('pauseButton');
+        const stopButton = document.getElementById('stopButton');
+        const volumeControl = document.getElementById('volumeControl');
+
+        playButton.addEventListener('click', () => {
+            audio.play();
+        });
+
+        pauseButton.addEventListener('click', () => {
+            audio.pause();
+        });
+
+        stopButton.addEventListener('click', () => {
+            audio.pause();
+            audio.currentTime = 0;
+        });
+
+        volumeControl.addEventListener('input', () => {
+            audio.volume = volumeControl.value;
+        });
+    </script>
+</body>
+</html>
