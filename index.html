@@ -15,12 +15,11 @@
 <body>
     <div class="player">
         <img src="https://i.imgur.com/DbH2i2k.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
-        <h1 style="font-family: Arial, sans-serif; color: #ADD8E6; font-style: italic;">Jammk Radio 24/7 LIVE</h1>
+        <h1 style="font-family: Arial, sans-serif; color: #6f8a92; font-style: italic;">Jammk Radio 24/7</h1>
         <audio id="radio" src="https://destroy-stated-kate-sole.trycloudflare.com/stream" preload="auto" loop="" autoplay=""></audio>
         <div class="controls">
             <button id="playButton">Play</button>
             <button id="pauseButton">Pause</button>
-            <button id="stopButton">Stop</button>
         </div>
         <br>
         <label for="volumeControl">Volume:</label>
@@ -30,7 +29,6 @@
         const audio = document.getElementById('radio');
         const playButton = document.getElementById('playButton');
         const pauseButton = document.getElementById('pauseButton');
-        const stopButton = document.getElementById('stopButton');
         const volumeControl = document.getElementById('volumeControl');
 
         playButton.addEventListener('click', () => {
@@ -39,11 +37,6 @@
 
         pauseButton.addEventListener('click', () => {
             audio.pause();
-        });
-
-        stopButton.addEventListener('click', () => {
-            audio.pause();
-            audio.currentTime = 0;
         });
 
         volumeControl.addEventListener('input', () => {
