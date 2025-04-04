@@ -16,7 +16,8 @@ body {
     padding: 30px;
     box-shadow: 20px 20px 60px #220c2a, -20px -20px 60px #341640;
     text-align: center;
-    width: 400px;
+    width: 80%;
+    max-width: 350px;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -88,10 +89,25 @@ button:active {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    flex-wrap: wrap;
 }
 
 .controls button {
-    margin: 0 15px;
+    margin: 5px 10px;
     padding: 15px 30px;
     font-size: 18px;
 }
+
+@media (max-width: 480px) {
+    .player {
+        width: 95%;
+        padding: 20px;
+    }
+
+    .controls button {
+        padding: 12px 20px;
+        font-size: 16px;
+        margin: 5px;
+    }
+}
+
