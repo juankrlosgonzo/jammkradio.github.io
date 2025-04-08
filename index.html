@@ -4,6 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Radio Player</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <script type="importmap">
         {
             "imports": {
@@ -15,14 +16,15 @@
 <body>
     <div class="player">
         <img src="https://i.imgur.com/QDf8I3e.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
-        <h1 style="font-family: Arial, sans-serif; color: #6f8a92; font-style: italic;">Jammk Radio 24/7</h1>
-        <audio id="radio" src="https://dakota-bags-taxi-week.trycloudflare.com/stream" preload="auto" loop="" autoplay=""></audio>
+        <h1 style="font-family: 'Roboto', Arial, sans-serif; color: #6f8a92; font-style: italic; font-weight: 400;">Jammk Radio 24/7</h1>
+        <div id="timeDisplay" class="time-display">00:00</div>
+        <audio id="radio" src="https://dakota-bags-taxi-week.trycloudflare.com/stream" preload="none" loop="" autoplay=""></audio>
         <div class="controls">
             <button id="playButton">Play</button>
             <button id="pauseButton">Pause</button>
         </div>
         <br>
-        <label for="volumeControl">Volume:</label>
+        <label for="volumeControl" style="margin-top: 15px; font-weight: 700;">Volume:</label>
         <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
     </div>
     <script>
@@ -30,17 +32,75 @@
         const playButton = document.getElementById('playButton');
         const pauseButton = document.getElementById('pauseButton');
         const volumeControl = document.getElementById('volumeControl');
+        const timeDisplay = document.getElementById('timeDisplay');
+
+        let startTime;
+        let timerInterval;
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            startTime = Date.now();
+            timeDisplay.textContent = '00:00';
+            timerInterval = setInterval(() => {
+                const elapsedTime = (Date.now() - startTime) / 1000;
+                timeDisplay.textContent = formatTime(elapsedTime);
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
 
         playButton.addEventListener('click', () => {
-            audio.play();
+            audio.load();
+            audio.play().then(() => {
+                startTimer();
+            }).catch(error => {
+                console.error("Error playing audio:", error);
+                timeDisplay.textContent = "Error";
+            });
         });
 
         pauseButton.addEventListener('click', () => {
             audio.pause();
+            stopTimer();
         });
 
         volumeControl.addEventListener('input', () => {
             audio.volume = volumeControl.value;
+        });
+
+        setTimeout(() => {
+            if (!audio.paused) {
+                console.log("Audio is autoplaying.");
+                startTimer();
+            } else {
+                console.log("Audio did not autoplay.");
+            }
+        }, 500);
+
+        audio.addEventListener('ended', stopTimer);
+        audio.addEventListener('error', stopTimer);
+        audio.addEventListener('pause', () => {
+            if (!audio.ended) {
+                stopTimer();
+            }
+        });
+        audio.addEventListener('play', () => {
+            if (!timerInterval) {
+                startTimer();
+            }
+        });
+        audio.addEventListener('playing', () => {
+            if (!timerInterval) {
+                startTimer();
+            }
         });
     </script>
 </body>

@@ -29,6 +29,26 @@ body {
     background-position: center;
 }
 
+.time-display {
+    font-size: 1.5em;
+    color: #b0c4de;
+    margin: 15px 0;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 5px 10px;
+    border-radius: 5px;
+    min-width: 70px;
+    display: inline-block;
+}
+
+h1 {
+    font-family: 'Roboto', Arial, sans-serif;
+    color: #6f8a92;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
 button {
     padding: 12px 25px;
     font-size: 16px;
@@ -53,9 +73,16 @@ button:active {
     box-shadow: 3px 3px 6px #220c2a, -3px -3px 6px #341640;
 }
 
+label[for="volumeControl"] {
+    margin-top: 15px;
+    font-weight: 700;
+    color: #b0c4de;
+    display: block;
+}
+
 #volumeControl {
     width: 80%;
-    margin-top: 20px;
+    margin-top: 10px;
     -webkit-appearance: none;
     height: 8px;
     background: #5a7b7b;
@@ -88,7 +115,7 @@ button:active {
 .controls {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 5px;
     flex-wrap: wrap;
 }
 
@@ -100,8 +127,13 @@ button:active {
 
 @media (max-width: 480px) {
     .player {
-        width: 95%;
+        width: 90%;
         padding: 20px;
+    }
+
+    .time-display {
+        font-size: 1.3em;
+        margin: 10px 0;
     }
 
     .controls button {
@@ -109,5 +141,12 @@ button:active {
         font-size: 16px;
         margin: 5px;
     }
-}
 
+    label[for="volumeControl"] {
+        margin-top: 10px;
+    }
+
+    #volumeControl {
+        margin-top: 5px;
+    }
+}
