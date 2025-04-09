@@ -15,7 +15,7 @@
 </head>
 <body>
     <div class="player">
-        <img src="https://i.imgur.com/QDf8I3e.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
+        <img src="https://i.imgur.com/DbH2i2k.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
         <h1 style="font-family: 'Roboto', Arial, sans-serif; color: #6f8a92; font-style: italic; font-weight: 400;">Jammk Radio 24/7</h1>
         <div id="timeDisplay" class="time-display">00:00:00</div>
         <audio id="radio" src="https://dakota-bags-taxi-week.trycloudflare.com/stream" preload="none" loop="" autoplay=""></audio>
@@ -38,15 +38,16 @@
         let timerInterval;
 
         function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
             const secs = Math.floor(seconds % 60);
-            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
         function startTimer() {
             clearInterval(timerInterval);
             startTime = Date.now();
-            timeDisplay.textContent = '00:00';
+            timeDisplay.textContent = '00:00:00'; 
             timerInterval = setInterval(() => {
                 const elapsedTime = (Date.now() - startTime) / 1000;
                 timeDisplay.textContent = formatTime(elapsedTime);
