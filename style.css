@@ -1,186 +1,175 @@
 body {
-    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #341a42; 
-    margin: 0;
-    padding: 0;
-    color: #e0e5ec; 
+    background-color: #2c2f33; /* Fondo Neumorfista oscuro */
+    font-family: 'Arial', sans-serif;
+}
+
+.player-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .player {
-    background-color: #341a42; 
-    border-radius: 30px; 
+    background-color: #2c2f33; /* Fondo del reproductor oscuro */
+    border-radius: 20px;
     padding: 30px;
-    box-shadow: 9px 9px 16px #2a1535, -9px -9px 16px #3e1f4f;
-    text-align: center;
-    width: 80%;
-    max-width: 350px;
-    height: auto;
+    box-shadow: 9px 9px 16px #1f2124, /* Sombra inferior derecha más oscura */
+               -9px -9px 16px #393d42; /* Sombra superior izquierda (luz) más oscura */
     display: flex;
     flex-direction: column;
+    align-items: center;
+    width: 280px; /* Slightly wider to accommodate larger logo */
+}
+
+.logo {
+    width: 100px; /* Increased size */
+    height: 100px; /* Increased size */
+    border-radius: 50%;
+    background-color: #2c2f33;
+    box-shadow: inset 6px 6px 12px #1f2124, /* Adjusted shadow */
+                inset -6px -6px 12px #393d42; /* Adjusted shadow */
+    display: flex;
     justify-content: center;
     align-items: center;
-    border: none;
-    background-image: none; 
+    margin-bottom: 30px; /* Increased bottom margin */
 }
 
-.time-display {
-    font-size: 1.5em;
-    color: #bfa9ca; 
-    margin: 15px 0;
-    font-family: 'Courier New', Courier, monospace;
-    background-color: #341a42; 
-    padding: 8px 15px; 
-    border-radius: 10px; 
-    box-shadow: inset 5px 5px 10px #2a1535, inset -5px -5px 10px #3e1f4f;
-    min-width: 120px; 
-    display: inline-block;
-}
-
-h1 {
-    font-family: 'Roboto', Arial, sans-serif;
-    color: #c8b8d3; 
-    font-style: italic;
-    font-weight: 400;
-    margin-bottom: 15px; 
-}
-
-button {
-    padding: 12px 25px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    background-color: #341a42; 
-    color: #e0e5ec; 
-    border-radius: 25px;
-    margin: 0 15px;
-    transition: all 0.2s ease-in-out; 
-    box-shadow: 7px 7px 14px #2a1535, -7px -7px 14px #3e1f4f;
-}
-
-button:hover {
-    box-shadow: 5px 5px 10px #2a1535, -5px -5px 10px #3e1f4f;
-    transform: translateY(-1px);
-}
-
-button:active {
-    box-shadow: inset 5px 5px 10px #2a1535, inset -5px -5px 10px #3e1f4f;
-    transform: translateY(1px);
-    color: #bfa9ca; 
-}
-
-label[for="volumeControl"] {
-    margin-top: 20px; 
-    font-weight: 700;
-    color: #c8b8d3; 
-    display: block;
-}
-
-#volumeControl {
-    width: 80%;
-    margin-top: 10px;
-    -webkit-appearance: none;
-    height: 8px;
-    background: #341a42; 
-    border-radius: 5px;
-    outline: none;
-    box-shadow: inset 3px 3px 6px #2a1535, inset -3px -3px 6px #3e1f4f;
-}
-
-#volumeControl::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    background: #341a42; 
+.logo img {
+    width: 80px; /* Increased size */
+    height: 80px; /* Increased size */
     border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    box-shadow: 5px 5px 10px #2a1535, -5px -5px 10px #3e1f4f;
-    transition: box-shadow 0.2s ease-in-out;
-}
-#volumeControl:active::-webkit-slider-thumb {
-     box-shadow: inset 3px 3px 6px #2a1535, inset -3px -3px 6px #3e1f4f;
-}
-
-#volumeControl::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    background: #341a42; 
-    border-radius: 50%;
-    border: none;
-    cursor: pointer;
-    box-shadow: 5px 5px 10px #2a1535, -5px -5px 10px #3e1f4f;
-     transition: box-shadow 0.2s ease-in-out;
-}
-#volumeControl:active::-moz-range-thumb {
-     box-shadow: inset 3px 3px 6px #2a1535, inset -3px -3px 6px #3e1f4f;
+    object-fit: cover;
 }
 
 .controls {
     display: flex;
+    justify-content: center; /* Center buttons horizontally */
+    gap: 20px; /* Add space between buttons */
+    align-items: center;
+    margin-bottom: 25px; /* Increased margin */
+}
+
+.control-button {
+    background-color: #2c2f33;
+    border: none;
+    width: 60px; /* Keep size */
+    height: 60px; /* Keep size */
+    border-radius: 50%;
+    box-shadow: 7px 7px 14px #1f2124,
+               -7px -7px 14px #393d42;
+    display: flex;
     justify-content: center;
-    margin-top: 20px; 
-    flex-wrap: wrap;
+    align-items: center;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+    color: #bdc1c6; /* Color de icono más claro */
 }
 
-.controls button {
-    margin: 10px 10px; 
-    padding: 15px 30px;
-    font-size: 18px;
+/* Specific size adjustments if needed */
+#stopBtn svg {
+    width: 20px; /* Slightly smaller for square */
+    height: 20px;
 }
 
-@media (max-width: 480px) {
-    .player {
-        width: 90%;
-        padding: 20px;
-        box-shadow: 7px 7px 14px #2a1535, -7px -7px 14px #3e1f4f; 
-    }
+.control-button:active {
+    box-shadow: inset 5px 5px 10px #1f2124,
+                inset -5px -5px 10px #393d42;
+    color: #ffffff; /* Color de icono más claro al presionar */
+    /* Slightly scale down on press */
+    transform: scale(0.95);
+}
 
-    .time-display {
-        font-size: 1.3em;
-        margin: 10px 0;
-        padding: 6px 12px;
-        box-shadow: inset 4px 4px 8px #2a1535, inset -4px -4px 8px #3e1f4f;
-    }
+.control-button svg {
+    width: 24px; /* Default icon size */
+    height: 24px;
+}
 
-    button {
-        box-shadow: 6px 6px 12px #2a1535, -6px -6px 12px #3e1f4f;
-    }
-     button:hover {
-        box-shadow: 4px 4px 8px #2a1535, -4px -4px 8px #3e1f4f;
-    }
-    button:active {
-        box-shadow: inset 4px 4px 8px #2a1535, inset -4px -4px 8px #3e1f4f;
-    }
+.volume-control {
+    width: 80%; /* Make slider container take up most of the width */
+    margin-bottom: 15px; /* Space below slider */
+    display: flex;
+    justify-content: center;
+}
 
-    .controls button {
-        padding: 12px 20px;
-        font-size: 16px;
-        margin: 8px; 
-    }
+/* Neumorphic Slider Styles */
+input[type="range"] {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 100%; /* Full width of container */
+    height: 8px; /* Track height */
+    background: #2c2f33; /* Base color */
+    border-radius: 5px; /* Rounded track */
+    outline: none;
+    cursor: pointer;
+    /* Neumorphic track shadows */
+    box-shadow: inset 3px 3px 6px #1f2124,
+                inset -3px -3px 6px #393d42;
+}
 
-    label[for="volumeControl"] {
-        margin-top: 15px; 
-    }
+/* Webkit (Chrome, Safari, Edge) Thumb */
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px; /* Thumb width */
+    height: 18px; /* Thumb height */
+    background: #bdc1c6; /* Thumb color */
+    border-radius: 50%; /* Circular thumb */
+    cursor: pointer;
+    border: none;
+    /* Neumorphic thumb shadows */
+    box-shadow: 4px 4px 8px #1f2124,
+               -4px -4px 8px #393d42;
+    transition: background-color 0.2s ease-in-out;
+}
 
-    #volumeControl {
-        margin-top: 8px; 
-         box-shadow: inset 2px 2px 4px #2a1535, inset -2px -2px 4px #3e1f4f;
-    }
+input[type="range"]::-webkit-slider-thumb:active {
+     background: #ffffff; /* Lighter color on grab */
+      box-shadow: inset 2px 2px 4px #1f2124,
+                inset -2px -2px 4px #393d42;
+}
 
-    #volumeControl::-webkit-slider-thumb {
-         box-shadow: 4px 4px 8px #2a1535, -4px -4px 8px #3e1f4f;
-    }
-     #volumeControl:active::-webkit-slider-thumb {
-         box-shadow: inset 2px 2px 4px #2a1535, inset -2px -2px 4px #3e1f4f;
-    }
-    #volumeControl::-moz-range-thumb {
-         box-shadow: 4px 4px 8px #2a1535, -4px -4px 8px #3e1f4f;
-    }
-     #volumeControl:active::-moz-range-thumb {
-         box-shadow: inset 2px 2px 4px #2a1535, inset -2px -2px 4px #3e1f4f;
-    }
+/* Mozilla (Firefox) Thumb */
+input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    background: #bdc1c6;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+     box-shadow: 4px 4px 8px #1f2124,
+               -4px -4px 8px #393d42;
+    transition: background-color 0.2s ease-in-out;
+}
+
+input[type="range"]::-moz-range-thumb:active {
+     background: #ffffff;
+      box-shadow: inset 2px 2px 4px #1f2124,
+                inset -2px -2px 4px #393d42;
+}
+
+/* Firefox Track Customization (less direct shadow control than webkit) */
+input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: #2c2f33; /* Match webkit track base */
+    border-radius: 5px;
+    cursor: pointer;
+     /* Simple inset feel for FF track */
+     box-shadow: inset 1px 1px 2px #1f2124,
+                inset -1px -1px 2px #393d42;
+}
+
+.status {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #8e9297; /* Color de texto de estado más claro */
+    min-height: 1.2em; /* Prevent layout shifts */
+    text-align: center;
 }

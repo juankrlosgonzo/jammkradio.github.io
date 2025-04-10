@@ -1,119 +1,33 @@
-<html>
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Radio Player</title>
+    <title>Reproductor de Radio Neumorfista</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="player">
-<img src="https://i.imgur.com/QDf8I3e.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
-        <h1 style="font-family: 'Roboto', Arial, sans-serif; color: #9662b0; font-style: italic; font-weight: 400;">Jammk Radio 24/7</h1>
-        <div id="timeDisplay" class="time-display">00:00:00</div>
-        <audio id="radio" src="https://dakota-bags-taxi-week.trycloudflare.com/stream" preload="none" loop="" autoplay=""></audio>
-        <div class="controls">
-            <button id="playButton">Play</button>
-            <button id="pauseButton">Pause</button>
+    <div class="player-container">
+        <div class="player">
+            <div class="logo">
+                <center><img src="https://i.imgur.com/lF2bNiN.png" alt="Radio Logo" style="width: 110px; height: 110px; margin-bottom: -03px;"></center>
+        
+            </div>
+            <div class="controls">
+                 <button id="playPauseBtn" class="control-button">
+                    <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="28px" height="28px"><path d="M8 5V19L19 12L8 5Z"/></svg>
+                    <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="28px" height="28px" style="display: none;"><path d="M6 5H8V19H6V5ZM16 5H18V19H16V5Z"/></svg>
+                </button>
+                 <button id="stopBtn" class="control-button">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24px" height="24px"><path d="M6 6H18V18H6V6Z"/></svg>
+                 </button>
+            </div>
+            <div class="volume-control">
+                 <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
+            </div>
+            <audio id="audioPlayer" src="https://dakota-bags-taxi-week.trycloudflare.com/stream" autoplay></audio>
+             <div class="status">Cargando...</div>
         </div>
-        <br>
-        <label for="volumeControl" style="margin-top: 15px; font-weight: 700;">Volume:</label>
-        <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
     </div>
-    <script>
-        const audio = document.getElementById('radio');
-        const playButton = document.getElementById('playButton');
-        const pauseButton = document.getElementById('pauseButton');
-        const volumeControl = document.getElementById('volumeControl');
-        const timeDisplay = document.getElementById('timeDisplay');
-
-        let startTime;
-        let timerInterval;
-        let accumulatedTime = 0;
-        let isPlaying = false;
-
-        function formatTime(seconds) {
-            const hours = Math.floor(seconds / 3600);
-            const minutes = Math.floor((seconds % 3600) / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        function startTimer() {
-            if (isPlaying) return;
-            clearInterval(timerInterval);
-            startTime = Date.now();
-            isPlaying = true;
-            timerInterval = setInterval(() => {
-                const elapsedTimeSinceStart = (Date.now() - startTime) / 1000;
-                timeDisplay.textContent = formatTime(accumulatedTime + elapsedTimeSinceStart);
-            }, 1000);
-            const elapsedTimeSinceStart = (Date.now() - startTime) / 1000;
-            timeDisplay.textContent = formatTime(accumulatedTime + elapsedTimeSinceStart);
-        }
-
-        function stopTimer() {
-            if (!isPlaying) return;
-            clearInterval(timerInterval);
-            const elapsedTime = (Date.now() - startTime) / 1000;
-            accumulatedTime += elapsedTime;
-            isPlaying = false;
-            timerInterval = null;
-        }
-
-        playButton.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.load();
-                audio.play().then(() => {
-                    accumulatedTime = 0;
-                    startTimer();
-                }).catch(error => {
-                    console.error("Error playing audio:", error);
-                    timeDisplay.textContent = "Error";
-                    stopTimer();
-                });
-            } else {
-                if (!timerInterval) {
-                    startTimer();
-                }
-            }
-        });
-
-        pauseButton.addEventListener('click', () => {
-            audio.pause();
-            stopTimer();
-        });
-
-        volumeControl.addEventListener('input', () => {
-            audio.volume = volumeControl.value;
-        });
-
-        audio.addEventListener('ended', () => {
-            stopTimer();
-            accumulatedTime = 0;
-            timeDisplay.textContent = '00:00:00';
-        });
-        audio.addEventListener('error', (e) => {
-            console.error("Audio Error:", e);
-            timeDisplay.textContent = "Stream Error";
-            stopTimer();
-            accumulatedTime = 0;
-        });
-        audio.addEventListener('pause', () => {
-            if (!audio.ended && isPlaying) {
-                stopTimer();
-            }
-        });
-        audio.addEventListener('playing', () => {
-            if (!isPlaying) {
-                accumulatedTime = 0;
-                startTimer();
-            }
-        });
-
-        audio.volume = volumeControl.value;
-        timeDisplay.textContent = formatTime(accumulatedTime);
-
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
