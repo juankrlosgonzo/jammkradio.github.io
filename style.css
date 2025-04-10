@@ -4,17 +4,17 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #230b2c;
+    background-color: #341a42; 
     margin: 0;
     padding: 0;
-    color: white;
+    color: #e0e5ec; 
 }
 
 .player {
-    background-color: #2d1338;
-    border-radius: 20px;
+    background-color: #341a42; 
+    border-radius: 30px; 
     padding: 30px;
-    box-shadow: 20px 20px 60px #220c2a, -20px -20px 60px #341640;
+    box-shadow: 9px 9px 16px #2a1535, -9px -9px 16px #3e1f4f;
     text-align: center;
     width: 80%;
     max-width: 350px;
@@ -23,30 +23,29 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid #341640;
-    background-image: url('https://i.imgur.com/tFGknrC.png');
-    background-size: cover;
-    background-position: center;
+    border: none;
+    background-image: none; 
 }
 
 .time-display {
     font-size: 1.5em;
-    color: #b0c4de;
+    color: #bfa9ca; 
     margin: 15px 0;
     font-family: 'Courier New', Courier, monospace;
-    background-color: rgba(0, 0, 0, 0.3);
-    padding: 5px 10px;
-    border-radius: 5px;
-    min-width: 100px;
+    background-color: #341a42; 
+    padding: 8px 15px; 
+    border-radius: 10px; 
+    box-shadow: inset 5px 5px 10px #2a1535, inset -5px -5px 10px #3e1f4f;
+    min-width: 120px; 
     display: inline-block;
 }
 
 h1 {
     font-family: 'Roboto', Arial, sans-serif;
-    color: #6f8a92;
+    color: #c8b8d3; 
     font-style: italic;
     font-weight: 400;
-    margin-bottom: 10px;
+    margin-bottom: 15px; 
 }
 
 button {
@@ -54,29 +53,29 @@ button {
     font-size: 16px;
     cursor: pointer;
     border: none;
-    background-color: #739b9b;
-    color: #fff;
+    background-color: #341a42; 
+    color: #e0e5ec; 
     border-radius: 25px;
     margin: 0 15px;
-    transition: all 0.3s ease;
-    box-shadow: 5px 5px 10px #220c2a, -5px -5px 10px #341640;
+    transition: all 0.2s ease-in-out; 
+    box-shadow: 7px 7px 14px #2a1535, -7px -7px 14px #3e1f4f;
 }
 
 button:hover {
-    background-color: #5a7b7b;
-    transform: translateY(-2px);
-    box-shadow: 7px 7px 14px #220c2a, -7px -7px 14px #341640;
+    box-shadow: 5px 5px 10px #2a1535, -5px -5px 10px #3e1f4f;
+    transform: translateY(-1px);
 }
 
 button:active {
+    box-shadow: inset 5px 5px 10px #2a1535, inset -5px -5px 10px #3e1f4f;
     transform: translateY(1px);
-    box-shadow: 3px 3px 6px #220c2a, -3px -3px 6px #341640;
+    color: #bfa9ca; 
 }
 
 label[for="volumeControl"] {
-    margin-top: 15px;
+    margin-top: 20px; 
     font-weight: 700;
-    color: #b0c4de;
+    color: #c8b8d3; 
     display: block;
 }
 
@@ -85,42 +84,50 @@ label[for="volumeControl"] {
     margin-top: 10px;
     -webkit-appearance: none;
     height: 8px;
-    background: #5a7b7b;
+    background: #341a42; 
     border-radius: 5px;
     outline: none;
-    box-shadow: inset 2px 2px 4px #220c2a, inset -2px -2px 4px #341640;
+    box-shadow: inset 3px 3px 6px #2a1535, inset -3px -3px 6px #3e1f4f;
 }
 
 #volumeControl::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 20px;
     height: 20px;
-    background: #739b9b;
+    background: #341a42; 
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    box-shadow: 5px 5px 10px #220c2a, -5px -5px 10px #341640;
+    box-shadow: 5px 5px 10px #2a1535, -5px -5px 10px #3e1f4f;
+    transition: box-shadow 0.2s ease-in-out;
+}
+#volumeControl:active::-webkit-slider-thumb {
+     box-shadow: inset 3px 3px 6px #2a1535, inset -3px -3px 6px #3e1f4f;
 }
 
 #volumeControl::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background: #739b9b;
+    background: #341a42; 
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    box-shadow: 5px 5px 10px #220c2a, -5px -5px 10px #341640;
+    box-shadow: 5px 5px 10px #2a1535, -5px -5px 10px #3e1f4f;
+     transition: box-shadow 0.2s ease-in-out;
+}
+#volumeControl:active::-moz-range-thumb {
+     box-shadow: inset 3px 3px 6px #2a1535, inset -3px -3px 6px #3e1f4f;
 }
 
 .controls {
     display: flex;
     justify-content: center;
-    margin-top: 5px;
+    margin-top: 20px; 
     flex-wrap: wrap;
 }
 
 .controls button {
-    margin: 5px 10px;
+    margin: 10px 10px; 
     padding: 15px 30px;
     font-size: 18px;
 }
@@ -129,24 +136,51 @@ label[for="volumeControl"] {
     .player {
         width: 90%;
         padding: 20px;
+        box-shadow: 7px 7px 14px #2a1535, -7px -7px 14px #3e1f4f; 
     }
 
     .time-display {
         font-size: 1.3em;
         margin: 10px 0;
+        padding: 6px 12px;
+        box-shadow: inset 4px 4px 8px #2a1535, inset -4px -4px 8px #3e1f4f;
+    }
+
+    button {
+        box-shadow: 6px 6px 12px #2a1535, -6px -6px 12px #3e1f4f;
+    }
+     button:hover {
+        box-shadow: 4px 4px 8px #2a1535, -4px -4px 8px #3e1f4f;
+    }
+    button:active {
+        box-shadow: inset 4px 4px 8px #2a1535, inset -4px -4px 8px #3e1f4f;
     }
 
     .controls button {
         padding: 12px 20px;
         font-size: 16px;
-        margin: 5px;
+        margin: 8px; 
     }
 
     label[for="volumeControl"] {
-        margin-top: 10px;
+        margin-top: 15px; 
     }
 
     #volumeControl {
-        margin-top: 5px;
+        margin-top: 8px; 
+         box-shadow: inset 2px 2px 4px #2a1535, inset -2px -2px 4px #3e1f4f;
+    }
+
+    #volumeControl::-webkit-slider-thumb {
+         box-shadow: 4px 4px 8px #2a1535, -4px -4px 8px #3e1f4f;
+    }
+     #volumeControl:active::-webkit-slider-thumb {
+         box-shadow: inset 2px 2px 4px #2a1535, inset -2px -2px 4px #3e1f4f;
+    }
+    #volumeControl::-moz-range-thumb {
+         box-shadow: 4px 4px 8px #2a1535, -4px -4px 8px #3e1f4f;
+    }
+     #volumeControl:active::-moz-range-thumb {
+         box-shadow: inset 2px 2px 4px #2a1535, inset -2px -2px 4px #3e1f4f;
     }
 }

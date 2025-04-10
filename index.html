@@ -5,18 +5,11 @@
     <title>Radio Player</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <script type="importmap">
-        {
-            "imports": {
-                "standard-audio-context": "https://unpkg.com/standard-audio-context@2.3.0/es2019/index.js"
-            }
-        }
-    </script>
 </head>
 <body>
     <div class="player">
-        <img src="https://i.imgur.com/DbH2i2k.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
-        <h1 style="font-family: 'Roboto', Arial, sans-serif; color: #6f8a92; font-style: italic; font-weight: 400;">Jammk Radio 24/7</h1>
+<img src="https://i.imgur.com/QDf8I3e.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
+        <h1 style="font-family: 'Roboto', Arial, sans-serif; color: #9662b0; font-style: italic; font-weight: 400;">Jammk Radio 24/7</h1>
         <div id="timeDisplay" class="time-display">00:00:00</div>
         <audio id="radio" src="https://dakota-bags-taxi-week.trycloudflare.com/stream" preload="none" loop="" autoplay=""></audio>
         <div class="controls">
@@ -36,6 +29,8 @@
 
         let startTime;
         let timerInterval;
+        let accumulatedTime = 0;
+        let isPlaying = false;
 
         function formatTime(seconds) {
             const hours = Math.floor(seconds / 3600);
@@ -45,27 +40,43 @@
         }
 
         function startTimer() {
+            if (isPlaying) return;
             clearInterval(timerInterval);
             startTime = Date.now();
-            timeDisplay.textContent = '00:00:00'; 
+            isPlaying = true;
             timerInterval = setInterval(() => {
-                const elapsedTime = (Date.now() - startTime) / 1000;
-                timeDisplay.textContent = formatTime(elapsedTime);
+                const elapsedTimeSinceStart = (Date.now() - startTime) / 1000;
+                timeDisplay.textContent = formatTime(accumulatedTime + elapsedTimeSinceStart);
             }, 1000);
+            const elapsedTimeSinceStart = (Date.now() - startTime) / 1000;
+            timeDisplay.textContent = formatTime(accumulatedTime + elapsedTimeSinceStart);
         }
 
         function stopTimer() {
+            if (!isPlaying) return;
             clearInterval(timerInterval);
+            const elapsedTime = (Date.now() - startTime) / 1000;
+            accumulatedTime += elapsedTime;
+            isPlaying = false;
+            timerInterval = null;
         }
 
         playButton.addEventListener('click', () => {
-            audio.load();
-            audio.play().then(() => {
-                startTimer();
-            }).catch(error => {
-                console.error("Error playing audio:", error);
-                timeDisplay.textContent = "Error";
-            });
+            if (audio.paused) {
+                audio.load();
+                audio.play().then(() => {
+                    accumulatedTime = 0;
+                    startTimer();
+                }).catch(error => {
+                    console.error("Error playing audio:", error);
+                    timeDisplay.textContent = "Error";
+                    stopTimer();
+                });
+            } else {
+                if (!timerInterval) {
+                    startTimer();
+                }
+            }
         });
 
         pauseButton.addEventListener('click', () => {
@@ -77,32 +88,32 @@
             audio.volume = volumeControl.value;
         });
 
-        setTimeout(() => {
-            if (!audio.paused) {
-                console.log("Audio is autoplaying.");
-                startTimer();
-            } else {
-                console.log("Audio did not autoplay.");
-            }
-        }, 500);
-
-        audio.addEventListener('ended', stopTimer);
-        audio.addEventListener('error', stopTimer);
+        audio.addEventListener('ended', () => {
+            stopTimer();
+            accumulatedTime = 0;
+            timeDisplay.textContent = '00:00:00';
+        });
+        audio.addEventListener('error', (e) => {
+            console.error("Audio Error:", e);
+            timeDisplay.textContent = "Stream Error";
+            stopTimer();
+            accumulatedTime = 0;
+        });
         audio.addEventListener('pause', () => {
-            if (!audio.ended) {
+            if (!audio.ended && isPlaying) {
                 stopTimer();
             }
         });
-        audio.addEventListener('play', () => {
-            if (!timerInterval) {
-                startTimer();
-            }
-        });
         audio.addEventListener('playing', () => {
-            if (!timerInterval) {
+            if (!isPlaying) {
+                accumulatedTime = 0;
                 startTimer();
             }
         });
+
+        audio.volume = volumeControl.value;
+        timeDisplay.textContent = formatTime(accumulatedTime);
+
     </script>
 </body>
 </html>
