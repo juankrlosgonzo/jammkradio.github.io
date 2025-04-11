@@ -1,175 +1,152 @@
 body {
-    margin: 0;
-    padding: 0;
+    font-family: 'Roboto', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #2c2f33; /* Fondo Neumorfista oscuro */
-    font-family: 'Arial', sans-serif;
-}
-
-.player-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: #230b2c;
+    margin: 0;
+    padding: 0;
+    color: white;
 }
 
 .player {
-    background-color: #2c2f33; /* Fondo del reproductor oscuro */
+    background-color: #2d1338;
     border-radius: 20px;
     padding: 30px;
-    box-shadow: 9px 9px 16px #1f2124, /* Sombra inferior derecha más oscura */
-               -9px -9px 16px #393d42; /* Sombra superior izquierda (luz) más oscura */
+    box-shadow: 20px 20px 60px #220c2a, -20px -20px 60px #341640;
+    text-align: center;
+    width: 80%;
+    max-width: 350px;
+    height: auto;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    width: 280px; /* Slightly wider to accommodate larger logo */
-}
-
-.logo {
-    width: 100px; /* Increased size */
-    height: 100px; /* Increased size */
-    border-radius: 50%;
-    background-color: #2c2f33;
-    box-shadow: inset 6px 6px 12px #1f2124, /* Adjusted shadow */
-                inset -6px -6px 12px #393d42; /* Adjusted shadow */
-    display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 30px; /* Increased bottom margin */
+    border: 1px solid #341640;
+    background-image: url('https://i.imgur.com/tFGknrC.png');
+    background-size: cover;
+    background-position: center;
 }
 
-.logo img {
-    width: 80px; /* Increased size */
-    height: 80px; /* Increased size */
+.time-display {
+    font-size: 1.5em;
+    color: #b0c4de;
+    margin: 15px 0;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 5px 10px;
+    border-radius: 5px;
+    min-width: 100px;
+    display: inline-block;
+}
+
+h1 {
+    font-family: 'Roboto', Arial, sans-serif;
+    color: #6f8a92;
+    font-style: italic;
+    font-weight: 400;
+    margin-bottom: 10px;
+}
+
+button {
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    background-color: #739b9b;
+    color: #fff;
+    border-radius: 25px;
+    margin: 0 15px;
+    transition: all 0.3s ease;
+    box-shadow: 5px 5px 10px #220c2a, -5px -5px 10px #341640;
+}
+
+button:hover {
+    background-color: #5a7b7b;
+    transform: translateY(-2px);
+    box-shadow: 7px 7px 14px #220c2a, -7px -7px 14px #341640;
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 3px 3px 6px #220c2a, -3px -3px 6px #341640;
+}
+
+label[for="volumeControl"] {
+    margin-top: 15px;
+    font-weight: 700;
+    color: #b0c4de;
+    display: block;
+}
+
+#volumeControl {
+    width: 80%;
+    margin-top: 10px;
+    -webkit-appearance: none;
+    height: 8px;
+    background: #5a7b7b;
+    border-radius: 5px;
+    outline: none;
+    box-shadow: inset 2px 2px 4px #220c2a, inset -2px -2px 4px #341640;
+}
+
+#volumeControl::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #739b9b;
     border-radius: 50%;
-    object-fit: cover;
+    border: none;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px #220c2a, -5px -5px 10px #341640;
+}
+
+#volumeControl::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #739b9b;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    box-shadow: 5px 5px 10px #220c2a, -5px -5px 10px #341640;
 }
 
 .controls {
     display: flex;
-    justify-content: center; /* Center buttons horizontally */
-    gap: 20px; /* Add space between buttons */
-    align-items: center;
-    margin-bottom: 25px; /* Increased margin */
-}
-
-.control-button {
-    background-color: #2c2f33;
-    border: none;
-    width: 60px; /* Keep size */
-    height: 60px; /* Keep size */
-    border-radius: 50%;
-    box-shadow: 7px 7px 14px #1f2124,
-               -7px -7px 14px #393d42;
-    display: flex;
     justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    outline: none;
-    transition: all 0.2s ease-in-out;
-    color: #bdc1c6; /* Color de icono más claro */
+    margin-top: 5px;
+    flex-wrap: wrap;
 }
 
-/* Specific size adjustments if needed */
-#stopBtn svg {
-    width: 20px; /* Slightly smaller for square */
-    height: 20px;
+.controls button {
+    margin: 5px 10px;
+    padding: 15px 30px;
+    font-size: 18px;
 }
 
-.control-button:active {
-    box-shadow: inset 5px 5px 10px #1f2124,
-                inset -5px -5px 10px #393d42;
-    color: #ffffff; /* Color de icono más claro al presionar */
-    /* Slightly scale down on press */
-    transform: scale(0.95);
-}
+@media (max-width: 480px) {
+    .player {
+        width: 90%;
+        padding: 20px;
+    }
 
-.control-button svg {
-    width: 24px; /* Default icon size */
-    height: 24px;
-}
+    .time-display {
+        font-size: 1.3em;
+        margin: 10px 0;
+    }
 
-.volume-control {
-    width: 80%; /* Make slider container take up most of the width */
-    margin-bottom: 15px; /* Space below slider */
-    display: flex;
-    justify-content: center;
-}
+    .controls button {
+        padding: 12px 20px;
+        font-size: 16px;
+        margin: 5px;
+    }
 
-/* Neumorphic Slider Styles */
-input[type="range"] {
-    -webkit-appearance: none; /* Override default look */
-    appearance: none;
-    width: 100%; /* Full width of container */
-    height: 8px; /* Track height */
-    background: #2c2f33; /* Base color */
-    border-radius: 5px; /* Rounded track */
-    outline: none;
-    cursor: pointer;
-    /* Neumorphic track shadows */
-    box-shadow: inset 3px 3px 6px #1f2124,
-                inset -3px -3px 6px #393d42;
-}
+    label[for="volumeControl"] {
+        margin-top: 10px;
+    }
 
-/* Webkit (Chrome, Safari, Edge) Thumb */
-input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px; /* Thumb width */
-    height: 18px; /* Thumb height */
-    background: #bdc1c6; /* Thumb color */
-    border-radius: 50%; /* Circular thumb */
-    cursor: pointer;
-    border: none;
-    /* Neumorphic thumb shadows */
-    box-shadow: 4px 4px 8px #1f2124,
-               -4px -4px 8px #393d42;
-    transition: background-color 0.2s ease-in-out;
-}
-
-input[type="range"]::-webkit-slider-thumb:active {
-     background: #ffffff; /* Lighter color on grab */
-      box-shadow: inset 2px 2px 4px #1f2124,
-                inset -2px -2px 4px #393d42;
-}
-
-/* Mozilla (Firefox) Thumb */
-input[type="range"]::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    background: #bdc1c6;
-    border-radius: 50%;
-    cursor: pointer;
-    border: none;
-     box-shadow: 4px 4px 8px #1f2124,
-               -4px -4px 8px #393d42;
-    transition: background-color 0.2s ease-in-out;
-}
-
-input[type="range"]::-moz-range-thumb:active {
-     background: #ffffff;
-      box-shadow: inset 2px 2px 4px #1f2124,
-                inset -2px -2px 4px #393d42;
-}
-
-/* Firefox Track Customization (less direct shadow control than webkit) */
-input[type="range"]::-moz-range-track {
-    width: 100%;
-    height: 8px;
-    background: #2c2f33; /* Match webkit track base */
-    border-radius: 5px;
-    cursor: pointer;
-     /* Simple inset feel for FF track */
-     box-shadow: inset 1px 1px 2px #1f2124,
-                inset -1px -1px 2px #393d42;
-}
-
-.status {
-    margin-top: 10px;
-    font-size: 0.9em;
-    color: #8e9297; /* Color de texto de estado más claro */
-    min-height: 1.2em; /* Prevent layout shifts */
-    text-align: center;
+    #volumeControl {
+        margin-top: 5px;
+    }
 }

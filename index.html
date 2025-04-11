@@ -1,221 +1,108 @@
-<!DOCTYPE html>
-<html lang="es">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Radio Neomorfismo Glass</title>
-  <style>
-    :root {
-      --accent: #265883;
-      --text: #3e2b49;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: 'Segoe UI', sans-serif;
-      color: var(--text);
-      background: url('https://i.imgur.com/tFGknrC.png') center/cover no-repeat;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .player {
-      backdrop-filter: blur(16px) saturate(180%);
-      -webkit-backdrop-filter: blur(16px) saturate(180%);
-      background-color: rgba(255, 255, 255, 0.3);
-      border-radius: 30px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      padding: 40px 30px;
-      width: 320px;
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-      position: relative;
-      z-index: 1;
-    }
-
-    .cover {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto 20px;
-      border-radius: 50%;
-      background: url('https://i.imgur.com/QDf8I3e.png') center/cover no-repeat;
-      box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    }
-
-    h2 {
-      margin: 10px 0 25px;
-    }
-
-    .neobutton {
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      box-shadow: 10px 10px 20px rgba(0,0,0,0.15),
-                  -10px -10px 20px rgba(255,255,255,0.4);
-      font-size: 32px;
-      color: var(--accent);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .neobutton:active {
-      box-shadow: inset 5px 5px 10px rgba(0,0,0,0.15),
-                  inset -5px -5px 10px rgba(200,200,200,0.2);
-      transform: scale(0.95);
-    }
-
-    .volume {
-      margin-top: 30px;
-    }
-
-    input[type="range"] {
-      width: 100%;
-      -webkit-appearance: none;
-      background: transparent;
-    }
-
-    input[type="range"]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      height: 12px;
-      width: 16px;
-      border-radius: 50%;
-      background: var(--accent);
-      cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-
-    input[type="range"]::-webkit-slider-runnable-track {
-      height: 12px;
-      background: #698ead;
-      border-radius: 10px;
-    }
-
-    .status {
-      margin-top: 20px;
-      font-size: 0.9em;
-      color: #9ebabe;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: #bbb;
-      transition: background-color 0.3s;
-    }
-
-    .dot.online {
-      background-color: #00c853;
-    }
-
-    .dot.error {
-      background-color: #d50000;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Player</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script type="importmap">
+        {
+            "imports": {
+                "standard-audio-context": "https://unpkg.com/standard-audio-context@2.3.0/es2019/index.js"
+            }
+        }
+    </script>
 </head>
 <body>
-  <div class="player">
-    <div class="cover"></div>
-    <h2>JammK Radio</h2>
-    <button class="neobutton" id="playPause">▶</button>
-
-    <div class="volume">
-      <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+    <div class="player">
+        <img src="https://i.imgur.com/QDf8I3e.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
+        <h1 style="font-family: 'Roboto', Calibri, sans-serif; color: #7b9193; font-style: italic; font-weight: 400;">Jammk Radio</h1>
+        <div id="timeDisplay" class="time-display">00:00:00</div>
+        <audio id="radio" src="https://dakota-bags-taxi-week.trycloudflare.com/stream" preload="none" loop="" autoplay=""></audio>
+        <div class="controls">
+            <button id="playButton">Play</button>
+            <button id="pauseButton">Pause</button>
+        </div>
+        <br>
+        <label for="volumeControl" style="margin-top: 15px; font-weight: 700;">Volume:</label>
+        <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
     </div>
+    <script>
+        const audio = document.getElementById('radio');
+        const playButton = document.getElementById('playButton');
+        const pauseButton = document.getElementById('pauseButton');
+        const volumeControl = document.getElementById('volumeControl');
+        const timeDisplay = document.getElementById('timeDisplay');
 
-    <div class="status" id="status">
-      <div class="dot" id="dotStatus"></div>
-      <span id="statusText">Cargando...</span>
-    </div>
+        let startTime;
+        let timerInterval;
 
-    <audio id="radio">
-      <source src="https://dakota-bags-taxi-week.trycloudflare.com/stream" type="audio/mpeg">
-    </audio>
-  </div>
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
 
-  <script>
-    const radio = document.getElementById('radio');
-    const playBtn = document.getElementById('playPause');
-    const volumeSlider = document.getElementById('volumeControl');
-    const statusText = document.getElementById('statusText');
-    const dot = document.getElementById('dotStatus');
+        function startTimer() {
+            clearInterval(timerInterval);
+            startTime = Date.now();
+            timeDisplay.textContent = '00:00:00'; 
+            timerInterval = setInterval(() => {
+                const elapsedTime = (Date.now() - startTime) / 1000;
+                timeDisplay.textContent = formatTime(elapsedTime);
+            }, 1000);
+        }
 
-    let isPlaying = false;
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
 
-    function updateStatus(text, className) {
-      statusText.textContent = text;
-      dot.className = `dot ${className}`;
-    }
-
-    playBtn.addEventListener('click', () => {
-      if (!isPlaying) {
-        radio.play();
-      } else {
-        radio.pause();
-      }
-    });
-
-    volumeSlider.addEventListener('input', () => {
-      radio.volume = volumeSlider.value;
-      localStorage.setItem('radioVolume', volumeSlider.value);
-    });
-
-    radio.addEventListener('playing', () => {
-      playBtn.textContent = '⏸️';
-      updateStatus('Reproduciendo', 'online');
-      isPlaying = true;
-    });
-
-    radio.addEventListener('pause', () => {
-      playBtn.textContent = '▶';
-      updateStatus('En pausa', '');
-      isPlaying = false;
-    });
-
-    radio.addEventListener('waiting', () => {
-      updateStatus('Cargando...', '');
-    });
-
-    radio.addEventListener('error', () => {
-      updateStatus('Error al reproducir', 'error');
-      setTimeout(() => {
-        radio.load();
-        radio.play().catch(() => {
-          updateStatus('Presiona play para comenzar', '');
+        playButton.addEventListener('click', () => {
+            audio.load();
+            audio.play().then(() => {
+                startTimer();
+            }).catch(error => {
+                console.error("Error playing audio:", error);
+                timeDisplay.textContent = "Error";
+            });
         });
-      }, 4000);
-    });
 
-    radio.addEventListener('stalled', () => {
-      updateStatus('Reconectando...', '');
-      setTimeout(() => {
-        radio.load();
-        radio.play();
-      }, 3000);
-    });
+        pauseButton.addEventListener('click', () => {
+            audio.pause();
+            stopTimer();
+        });
 
-    window.addEventListener('load', () => {
-      const savedVolume = localStorage.getItem('radioVolume');
-      if (savedVolume !== null) {
-        radio.volume = savedVolume;
-        volumeSlider.value = savedVolume;
-      }
+        volumeControl.addEventListener('input', () => {
+            audio.volume = volumeControl.value;
+        });
 
-      radio.play().catch(() => {
-        updateStatus('Presiona play para comenzar', '');
-      });
-    });
-  </script>
+        setTimeout(() => {
+            if (!audio.paused) {
+                console.log("Audio is autoplaying.");
+                startTimer();
+            } else {
+                console.log("Audio did not autoplay.");
+            }
+        }, 500);
+
+        audio.addEventListener('ended', stopTimer);
+        audio.addEventListener('error', stopTimer);
+        audio.addEventListener('pause', () => {
+            if (!audio.ended) {
+                stopTimer();
+            }
+        });
+        audio.addEventListener('play', () => {
+            if (!timerInterval) {
+                startTimer();
+            }
+        });
+        audio.addEventListener('playing', () => {
+            if (!timerInterval) {
+                startTimer();
+            }
+        });
+    </script>
 </body>
 </html>
