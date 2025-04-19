@@ -1,33 +1,200 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JammK Radio</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Jammk Radio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #250d32;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .player {
+            background: #2c103c;
+            padding: 30px;
+            border-radius: 30px;
+            box-shadow: 8px 8px 28px #441b5d, -8px -8px 28px #4a2063;
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #657889;
+            font-style: italic;
+            font-weight: 400;
+            margin: 10px 0;
+        }
+
+        .time-display, .status {
+            font-size: 16px;
+            margin: 10px 0;
+            color: #617484;
+            font-weight: bold;
+        }
+
+        .controls {
+            margin-top: 15px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            background: #491663;
+            color: #8f6ba4;
+            font-weight: bold;
+            box-shadow: 5px 5px 15px #4f2e60, -5px -5px 15px #582f6d;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        button:hover {
+            box-shadow: inset 5px 5px 10px #430b5f, inset -5px -5px 10px #430b5f;
+        }
+
+        input[type=range] {
+            width: 100%;
+            margin-top: 10px;
+            -webkit-appearance: none;
+            background: transparent;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 12px;
+            width: 16px;
+            border-radius: 50%;
+            background: #305e87;
+            box-shadow: 5px 5px 10px #6b8e90, -5px -5px 10px #6b8e90;
+            cursor: pointer;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+            height: 12px;
+            background: #5c6f7f;
+            border-radius: 5px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 700;
+            color: #7a3db8;
+        }
+    </style>
 </head>
 <body>
-    <div class="player-container">
-        <div class="player">
-            <div class="logo">
-                <center><img src="https://i.imgur.com/lF2bNiN.png" alt="Radio Logo" style="width: 120px; height: 120px; margin-bottom: 2px;"></center>
-        
-            </div>
-            <div class="controls">
-                 <button id="playPauseBtn" class="control-button">
-                    <svg id="playIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="30px" height="30px"><path d="M8 5V19L19 12L8 5Z"/></svg>
-                    <svg id="pauseIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="30px" height="30px" style="display: none;"><path d="M6 5H8V19H6V5ZM16 5H18V19H16V5Z"/></svg>
-                </button>
-                 <button id="stopBtn" class="control-button">
-                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="30px" height="30px"><path d="M6 6H18V18H6V6Z"/></svg>
-                 </button>
-            </div>
-            <div class="volume-control">
-                 <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="1">
-            </div>
-            <audio id="audioPlayer" src="https://dakota-bags-taxi-week.trycloudflare.com/stream" autoplay></audio>
-             <div class="status">Cargando...</div>
+    <div class="player">
+        <img src="https://i.imgur.com/QDf8I3e.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
+        <h1>Jammk Radio</h1>
+        <div id="status" class="status">Cargando...</div>
+        <div id="timeDisplay" class="time-display">00:00:00</div>
+        <audio id="radio" src="https://dakota-bags-taxi-week.trycloudflare.com/stream" preload="none" loop autoplay></audio>
+        <div class="controls">
+            <button id="toggleButton">Play</button>
         </div>
+        <label for="volumeControl">Volumen:</label>
+        <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        const audio = document.getElementById('radio');
+        const toggleButton = document.getElementById('toggleButton');
+        const volumeControl = document.getElementById('volumeControl');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const status = document.getElementById('status');
+
+        let startTime;
+        let timerInterval;
+        let accumulatedTime = 0;
+        let isPlaying = false;
+
+        function formatTime(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (isPlaying) return;
+            clearInterval(timerInterval);
+            startTime = Date.now();
+            isPlaying = true;
+            timerInterval = setInterval(() => {
+                const elapsed = (Date.now() - startTime) / 1000;
+                timeDisplay.textContent = formatTime(accumulatedTime + elapsed);
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (!isPlaying) return;
+            clearInterval(timerInterval);
+            const elapsed = (Date.now() - startTime) / 1000;
+            accumulatedTime += elapsed;
+            isPlaying = false;
+            timerInterval = null;
+        }
+
+        toggleButton.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.load();
+                audio.play().then(() => {
+                    startTimer();
+                    toggleButton.textContent = 'Pause';
+                    status.textContent = 'Reproduciendo';
+                }).catch(err => {
+                    status.textContent = 'Error al reproducir';
+                    console.error(err);
+                });
+            } else {
+                audio.pause();
+                toggleButton.textContent = 'Play';
+                status.textContent = 'Pausado';
+            }
+        });
+
+        volumeControl.addEventListener('input', () => {
+            audio.volume = volumeControl.value;
+        });
+
+        audio.addEventListener('ended', () => {
+            stopTimer();
+            accumulatedTime = 0;
+            timeDisplay.textContent = '00:00:00';
+            toggleButton.textContent = 'Play';
+            status.textContent = 'Finalizado';
+        });
+
+        audio.addEventListener('error', () => {
+            status.textContent = 'Error en el stream';
+            stopTimer();
+        });
+
+        audio.addEventListener('pause', () => {
+            if (!audio.ended) {
+                stopTimer();
+            }
+        });
+
+        audio.addEventListener('playing', () => {
+            if (!isPlaying) {
+                startTimer();
+                status.textContent = 'Reproduciendo';
+            }
+        });
+
+        audio.volume = volumeControl.value;
+        timeDisplay.textContent = formatTime(accumulatedTime);
+    </script>
 </body>
 </html>
