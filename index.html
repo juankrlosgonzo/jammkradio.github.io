@@ -1,200 +1,221 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jammk Radio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            background: #210f29;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Radio Neomorfismo Glass</title>
+  <style>
+    :root {
+      --accent: #265883;
+      --text: #38164a;
+    }
 
-        .player {
-            background: #281332;
-            padding: 30px;
-            border-radius: 30px;
-            box-shadow: 5px 5px 25px #441b5d, -5px -5px 25px #4a2063;
-            text-align: center;
-            width: 280px;
-        }
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+      color: var(--text);
+      background: url('https://i.imgur.com/tFGknrC.png') center/cover no-repeat;
+      position: relative;
+      overflow: hidden;
+    }
 
-        h1 {
-            font-size: 24px;
-            color: #5c7585;
-            font-style: italic;
-            font-weight: 400;
-            margin: 10px 0;
-        }
+    .player {
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      background-color: rgba(200, 200, 200, 0.2);
+      border-radius: 30px;
+      border: 1px solid rgba(180, 180, 180, 0.1);
+      padding: 40px 30px;
+      width: 280px;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 1;
+    }
 
-        .time-display, .status {
-            font-size: 16px;
-            margin: 10px 0;
-            color: #5c7585;
-            font-weight: bold;
-        }
+    .cover {
+      width: 160px;
+      height: 160px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: url('https://i.imgur.com/lF2bNiN.png') center/cover no-repeat;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    }
 
-        .controls {
-            margin-top: 15px;
-        }
+    h2 {
+      margin: 15px 0 25px;
+    }
 
-        button {
-            margin: 5px;
-            padding: 10px 20px;
-            border-radius: 20px;
-            border: none;
-            background: #491663;
-            color: #8f6ba4;
-            font-weight: bold;
-            box-shadow: 5px 5px 15px #4f2e60, -5px -5px 15px #582f6d;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
+    .neobutton {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      box-shadow: 10px 10px 20px rgba(0,0,0,0.14),
+                  -10px -10px 20px rgba(255,255,255,0.2);
+      font-size: 30px;
+      color: var(--accent);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
 
-        button:hover {
-            box-shadow: inset 5px 5px 10px #430b5f, inset -5px -5px 10px #430b5f;
-        }
+    .neobutton:active {
+      box-shadow: inset 10px 10px 20px rgba(0,0,0,0.14),
+                  inset -10px -10px 20px rgba(255,255,255,0.2);
+      transform: scale(0.95);
+    }
 
-        input[type=range] {
-            width: 100%;
-            margin-top: 10px;
-            -webkit-appearance: none;
-            background: transparent;
-        }
+    .volume {
+      margin-top: 36px;
+    }
 
-        input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            height: 12px;
-            width: 16px;
-            border-radius: 50%;
-            background: #305e87;
-            box-shadow: 5px 5px 10px #6b8e90, -5px -5px 10px #6b8e90;
-            cursor: pointer;
-        }
+    input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      background: transparent;
+    }
 
-        input[type=range]::-webkit-slider-runnable-track {
-            height: 12px;
-            background: #5c6f7f;
-            border-radius: 5px;
-        }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 13px;
+      width: 16px;
+      border-radius: 50%;
+      background: var(--accent);
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
 
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: 700;
-            color: #7a3db8;
-        }
-    </style>
+    input[type="range"]::-webkit-slider-runnable-track {
+      height: 13px;
+      background: #698ead;
+      border-radius: 12px;
+    }
+
+    .status {
+      margin-top: 20px;
+      font-size: 1.0em;
+      color: #9ebabe;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: #bbb;
+      transition: background-color 0.3s;
+    }
+
+    .dot.online {
+      background-color: #00c853;
+    }
+
+    .dot.error {
+      background-color: #d50000;
+    }
+  </style>
 </head>
 <body>
-    <div class="player">
-        <img src="https://i.imgur.com/QDf8I3e.png" alt="Logo" style="width: 200px; margin-bottom: 10px;">
-        <h1>JammK Radio</h1>
-        <div id="status" class="status">Cargando...</div>
-        <div id="timeDisplay" class="time-display">00:00:00</div>
-        <audio id="radio" src="https://dakota-bags-taxi-week.trycloudflare.com/stream" preload="none" loop autoplay></audio>
-        <div class="controls">
-            <button id="toggleButton">Play</button>
-        </div>
-        <label for="volumeControl">Volumen:</label>
-        <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
+  <div class="player">
+    <div class="cover"></div>
+    <h2>JammK Radio</h2>
+    <button class="neobutton" id="playPause">▶</button>
+
+    <div class="volume">
+      <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
     </div>
 
-    <script>
-        const audio = document.getElementById('radio');
-        const toggleButton = document.getElementById('toggleButton');
-        const volumeControl = document.getElementById('volumeControl');
-        const timeDisplay = document.getElementById('timeDisplay');
-        const status = document.getElementById('status');
+    <div class="status" id="status">
+      <div class="dot" id="dotStatus"></div>
+      <span id="statusText">Cargando...</span>
+    </div>
 
-        let startTime;
-        let timerInterval;
-        let accumulatedTime = 0;
-        let isPlaying = false;
+    <audio id="radio">
+      <source src="https://dakota-bags-taxi-week.trycloudflare.com/stream" type="audio/mpeg">
+    </audio>
+  </div>
 
-        function formatTime(seconds) {
-            const hours = Math.floor(seconds / 3600);
-            const minutes = Math.floor((seconds % 3600) / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
+  <script>
+    const radio = document.getElementById('radio');
+    const playBtn = document.getElementById('playPause');
+    const volumeSlider = document.getElementById('volumeControl');
+    const statusText = document.getElementById('statusText');
+    const dot = document.getElementById('dotStatus');
 
-        function startTimer() {
-            if (isPlaying) return;
-            clearInterval(timerInterval);
-            startTime = Date.now();
-            isPlaying = true;
-            timerInterval = setInterval(() => {
-                const elapsed = (Date.now() - startTime) / 1000;
-                timeDisplay.textContent = formatTime(accumulatedTime + elapsed);
-            }, 1000);
-        }
+    let isPlaying = false;
 
-        function stopTimer() {
-            if (!isPlaying) return;
-            clearInterval(timerInterval);
-            const elapsed = (Date.now() - startTime) / 1000;
-            accumulatedTime += elapsed;
-            isPlaying = false;
-            timerInterval = null;
-        }
+    function updateStatus(text, className) {
+      statusText.textContent = text;
+      dot.className = `dot ${className}`;
+    }
 
-        toggleButton.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.load();
-                audio.play().then(() => {
-                    startTimer();
-                    toggleButton.textContent = 'Pause';
-                    status.textContent = 'Reproduciendo';
-                }).catch(err => {
-                    status.textContent = 'Error al reproducir';
-                    console.error(err);
-                });
-            } else {
-                audio.pause();
-                toggleButton.textContent = 'Play';
-                status.textContent = 'Pausado';
-            }
+    playBtn.addEventListener('click', () => {
+      if (!isPlaying) {
+        radio.play();
+      } else {
+        radio.pause();
+      }
+    });
+
+    volumeSlider.addEventListener('input', () => {
+      radio.volume = volumeSlider.value;
+      localStorage.setItem('radioVolume', volumeSlider.value);
+    });
+
+    radio.addEventListener('playing', () => {
+      playBtn.textContent = 'I I';
+      updateStatus('Reproduciendo', 'online');
+      isPlaying = true;
+    });
+
+    radio.addEventListener('pause', () => {
+      playBtn.textContent = '▶';
+      updateStatus('En pausa', '');
+      isPlaying = false;
+    });
+
+    radio.addEventListener('waiting', () => {
+      updateStatus('Cargando...', '');
+    });
+
+    radio.addEventListener('error', () => {
+      updateStatus('Error al reproducir', 'error');
+      setTimeout(() => {
+        radio.load();
+        radio.play().catch(() => {
+          updateStatus('Presiona play para comenzar', '');
         });
+      }, 4000);
+    });
 
-        volumeControl.addEventListener('input', () => {
-            audio.volume = volumeControl.value;
-        });
+    radio.addEventListener('stalled', () => {
+      updateStatus('Reconectando...', '');
+      setTimeout(() => {
+        radio.load();
+        radio.play();
+      }, 3000);
+    });
 
-        audio.addEventListener('ended', () => {
-            stopTimer();
-            accumulatedTime = 0;
-            timeDisplay.textContent = '00:00:00';
-            toggleButton.textContent = 'Play';
-            status.textContent = 'Finalizado';
-        });
+    window.addEventListener('load', () => {
+      const savedVolume = localStorage.getItem('radioVolume');
+      if (savedVolume !== null) {
+        radio.volume = savedVolume;
+        volumeSlider.value = savedVolume;
+      }
 
-        audio.addEventListener('error', () => {
-            status.textContent = 'Error en el stream';
-            stopTimer();
-        });
-
-        audio.addEventListener('pause', () => {
-            if (!audio.ended) {
-                stopTimer();
-            }
-        });
-
-        audio.addEventListener('playing', () => {
-            if (!isPlaying) {
-                startTimer();
-                status.textContent = 'Reproduciendo';
-            }
-        });
-
-        audio.volume = volumeControl.value;
-        timeDisplay.textContent = formatTime(accumulatedTime);
-    </script>
+      radio.play().catch(() => {
+        updateStatus('Presiona play para comenzar', '');
+      });
+    });
+  </script>
 </body>
 </html>
