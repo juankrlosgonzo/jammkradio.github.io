@@ -72,7 +72,7 @@
     }
 
     .volume {
-      margin-top: 36px;
+      margin-top: 26px;
     }
 
     input[type="range"] {
@@ -105,7 +105,8 @@
       justify-content: center;
       align-items: center;
       gap: 9px;
-    }
+     
+      }
 
     .dot {
       width: 10px;
@@ -130,6 +131,9 @@
     <h2>JammK Radio</h2>
     <button class="neobutton" id="playPause">▶</button>
 
+<div id="timer" style="margin-top: 10px; font-size: 0.95em; color: #ffffffb0;">00:00:00
+</div>
+
     <div class="volume">
       <input type="range" id="volumeControl" min="0" max="1" step="0.01" value="1">
     </div>
@@ -144,78 +148,105 @@
     </audio>
   </div>
 
-  <script>
-    const radio = document.getElementById('radio');
-    const playBtn = document.getElementById('playPause');
-    const volumeSlider = document.getElementById('volumeControl');
-    const statusText = document.getElementById('statusText');
-    const dot = document.getElementById('dotStatus');
+ <script>
+  const radio = document.getElementById('radio');
+  const playBtn = document.getElementById('playPause');
+  const volumeSlider = document.getElementById('volumeControl');
+  const statusText = document.getElementById('statusText');
+  const dot = document.getElementById('dotStatus');
+  const timer = document.getElementById('timer');
 
-    let isPlaying = false;
+  let isPlaying = false;
+  let timerInterval;
+  let secondsElapsed = 0;
 
-    function updateStatus(text, className) {
-      statusText.textContent = text;
-      dot.className = `dot ${className}`;
+  function updateStatus(text, className) {
+    statusText.textContent = text;
+    dot.className = `dot ${className}`;
+  }
+
+  function updateTimerDisplay() {
+    const hours = String(Math.floor(secondsElapsed / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((secondsElapsed % 3600) / 60)).padStart(2, '0');
+    const seconds = String(secondsElapsed % 60).padStart(2, '0');
+    timer.textContent = `${hours}:${minutes}:${seconds}`;
+  }
+
+  function startTimer() {
+    stopTimer(); // prevenir múltiples intervalos
+    secondsElapsed = 0;
+    updateTimerDisplay();
+    timerInterval = setInterval(() => {
+      secondsElapsed++;
+      updateTimerDisplay();
+    }, 1000);
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval);
+  }
+
+  playBtn.addEventListener('click', () => {
+    if (!isPlaying) {
+      radio.play();
+    } else {
+      radio.pause();
     }
+  });
 
-    playBtn.addEventListener('click', () => {
-      if (!isPlaying) {
-        radio.play();
-      } else {
-        radio.pause();
-      }
-    });
+  volumeSlider.addEventListener('input', () => {
+    radio.volume = volumeSlider.value;
+    localStorage.setItem('radioVolume', volumeSlider.value);
+  });
 
-    volumeSlider.addEventListener('input', () => {
-      radio.volume = volumeSlider.value;
-      localStorage.setItem('radioVolume', volumeSlider.value);
-    });
+  radio.addEventListener('playing', () => {
+    playBtn.textContent = 'I I';
+    updateStatus('Reproduciendo', 'online');
+    isPlaying = true;
+    startTimer();
+  });
 
-    radio.addEventListener('playing', () => {
-      playBtn.textContent = 'I I';
-      updateStatus('Reproduciendo', 'online');
-      isPlaying = true;
-    });
+  radio.addEventListener('pause', () => {
+    playBtn.textContent = '▶';
+    updateStatus('En pausa', '');
+    isPlaying = false;
+    stopTimer();
+  });
 
-    radio.addEventListener('pause', () => {
-      playBtn.textContent = '▶';
-      updateStatus('En pausa', '');
-      isPlaying = false;
-    });
+  radio.addEventListener('waiting', () => {
+    updateStatus('Cargando...', '');
+  });
 
-    radio.addEventListener('waiting', () => {
-      updateStatus('Cargando...', '');
-    });
-
-    radio.addEventListener('error', () => {
-      updateStatus('Error al reproducir', 'error');
-      setTimeout(() => {
-        radio.load();
-        radio.play().catch(() => {
-          updateStatus('Presiona play para comenzar', '');
-        });
-      }, 4000);
-    });
-
-    radio.addEventListener('stalled', () => {
-      updateStatus('Reconectando...', '');
-      setTimeout(() => {
-        radio.load();
-        radio.play();
-      }, 3000);
-    });
-
-    window.addEventListener('load', () => {
-      const savedVolume = localStorage.getItem('radioVolume');
-      if (savedVolume !== null) {
-        radio.volume = savedVolume;
-        volumeSlider.value = savedVolume;
-      }
-
+  radio.addEventListener('error', () => {
+    updateStatus('Error al reproducir', 'error');
+    setTimeout(() => {
+      radio.load();
       radio.play().catch(() => {
         updateStatus('Presiona play para comenzar', '');
       });
+    }, 4000);
+  });
+
+  radio.addEventListener('stalled', () => {
+    updateStatus('Reconectando...', '');
+    setTimeout(() => {
+      radio.load();
+      radio.play();
+    }, 3000);
+  });
+
+  window.addEventListener('load', () => {
+    const savedVolume = localStorage.getItem('radioVolume');
+    if (savedVolume !== null) {
+      radio.volume = savedVolume;
+      volumeSlider.value = savedVolume;
+    }
+
+    radio.play().catch(() => {
+      updateStatus('Presiona play para comenzar', '');
     });
-  </script>
-</body>
+  });
+
+</script>
+ </body>
 </html>
